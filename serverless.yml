@@ -64,6 +64,7 @@ functions:
           method: post
     environment:
       SLACK_WEBHOOK_URL: ${env:SLACK_WEBHOOK_URL}
+      CSL_URL: ${env:CSL_URL}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

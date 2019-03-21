@@ -3,6 +3,11 @@
 const { IncomingWebhook } = require('@slack/client');
 const url = process.env.SLACK_WEBHOOK_URL;
 const webhook = new IncomingWebhook(url);
+const csl_url = new URL(process.env.CSL_URL).origin;
+
+function csl_url(path) {
+  return `${csl_url}/${path.replace(/^\//, '')}`;
+}
 
 async function notify(message) {
   await new Promise((resolve, reject) => {
@@ -35,7 +40,7 @@ module.exports.webhook = async (event) => {
         title: text,
         fallback: text,
         color: 'warning',
-        text: `<https://www.mittskifte.org/org/moderation|Open moderation queue>`,
+        text: `<${csl_url('org/moderation')}|Open moderation queue>`,
       }
       break;
     case 'event.created':

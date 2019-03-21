@@ -1,12 +1,11 @@
 'use strict';
 
 const { IncomingWebhook } = require('@slack/client');
-const url = process.env.SLACK_WEBHOOK_URL;
-const webhook = new IncomingWebhook(url);
-const csl_url = new URL(process.env.CSL_URL).origin;
+const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK_URL);
+const cslBaseUrl = new URL(process.env.CSL_URL).origin;
 
-function csl_url(path) {
-  return `${csl_url}/${path.replace(/^\//, '')}`;
+function cslUrl(path) {
+  return `${cslBaseUrl}/${path.replace(/^\//, '')}`;
 }
 
 async function notify(message) {
@@ -40,7 +39,7 @@ module.exports.webhook = async (event) => {
         title: text,
         fallback: text,
         color: 'warning',
-        text: `<${csl_url('org/moderation')}|Open moderation queue>`,
+        text: `<${cslUrl('org/moderation')}|Open moderation queue>`,
       }
       break;
     case 'event.created':
@@ -68,6 +67,7 @@ module.exports.webhook = async (event) => {
         fallback: text,
         color: 'warning',
         text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
       }
       break;
     case 'petition.flagged':
@@ -77,6 +77,7 @@ module.exports.webhook = async (event) => {
         fallback: text,
         color: 'danger',
         text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
       }
       break;
     case 'petition.launched':
@@ -86,15 +87,37 @@ module.exports.webhook = async (event) => {
         fallback: text,
         color: 'good',
         text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
       }
       break;
-    case 'petition.launched.ham':
-      text = 'A petition has passed the post-launch spam check';
+    case 'petition.reactivated':
+      text = 'A hidden or ended petition has been reactivated';
       message = {
         title: text,
         fallback: text,
-        color: 'good',
+        color: 'warning',
         text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
+      }
+      break;
+    case 'petition.launched.requires_moderation':
+      text = 'A new petition requires moderation';
+      message = {
+        title: text,
+        fallback: text,
+        color: 'warning',
+        text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
+      }
+      break;
+    case 'petition.target.response':
+      text = 'A decision maker has responded to a petition notification';
+      message = {
+        title: text,
+        fallback: text,
+        color: 'warning',
+        text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
       }
       break;
   default:

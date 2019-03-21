@@ -1,6 +1,7 @@
 'use strict';
 
 const { IncomingWebhook } = require('@slack/client');
+const { URL } = require('url');
 const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK_URL);
 const cslBaseUrl = new URL(process.env.CSL_URL).origin;
 

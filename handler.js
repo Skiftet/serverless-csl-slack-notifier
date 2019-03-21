@@ -29,6 +29,7 @@ async function notify(message) {
 
 module.exports.webhook = async (event) => {
   const body = JSON.parse(event.body)
+  console.info('Received webhook type: ', body.type);
   // await notify(body.type);
 
   let message = null;

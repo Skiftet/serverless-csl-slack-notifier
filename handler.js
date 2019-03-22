@@ -50,7 +50,7 @@ module.exports.webhook = async (event) => {
         title: text,
         fallback: text,
         color: 'good',
-        text: `<${body.data.url}|Open event>`,
+        text: `${body.data.title} • <${body.data.url}|Open event>`,
       }
       break;
     case 'event.updated':
@@ -59,7 +59,7 @@ module.exports.webhook = async (event) => {
         title: text,
         fallback: text,
         color: 'warning',
-        text: `<${body.data.url}|Open event>`,
+        text: `${body.data.title} • <${body.data.url}|Open event>`,
       }
       break;
     case 'petition.ended':

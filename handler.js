@@ -102,16 +102,6 @@ module.exports.webhook = async (event) => {
         image_url: body.data.image_url,
       }
       break;
-    case 'petition.launched.requires_moderation':
-      text = 'A new petition requires moderation';
-      message = {
-        title: text,
-        fallback: text,
-        color: 'warning',
-        text: `${body.data.title} • <${body.data.url}|Open petition>`,
-        image_url: body.data.image_url,
-      }
-      break;
     case 'petition.target.response':
       text = 'A decision maker has responded to a petition notification';
       message = {

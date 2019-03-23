@@ -73,7 +73,7 @@ module.exports.webhook = async (event) => {
       }
       break;
     case 'petition.flagged':
-      text = 'A petition is flagged for the first or fifth time';
+      text = 'A petition has been flagged for the first or fifth time';
       message = {
         title: text,
         fallback: text,
@@ -94,6 +94,16 @@ module.exports.webhook = async (event) => {
       break;
     case 'petition.reactivated':
       text = 'A hidden or ended petition has been reactivated';
+      message = {
+        title: text,
+        fallback: text,
+        color: 'warning',
+        text: `${body.data.title} • <${body.data.url}|Open petition>`,
+        image_url: body.data.image_url,
+      }
+      break;
+    case 'petition.updated':
+      text = 'A petition has been updated';
       message = {
         title: text,
         fallback: text,

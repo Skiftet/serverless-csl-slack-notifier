@@ -41,7 +41,7 @@ module.exports.webhook = async (event) => {
         title: text,
         fallback: text,
         color: 'warning',
-        text: `<${cslUrl('org/moderation')}|Open moderation queue>`,
+        text: `<${cslUrl(`org/moderation/blast_emails/${body.data.id}`)}|Open moderation queue>`,
       }
       break;
     case 'event.created':
